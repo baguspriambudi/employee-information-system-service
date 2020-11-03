@@ -49,7 +49,7 @@ exports.midEmployeeUpdate = (req, res, next) => {
   }).options({ abortEarly: false });
   const isvalid2 = schema2.validate(req.query);
   if (isvalid2.error) {
-    return httpValidasiDataErrorRespone(res, error.details);
+    return httpValidasiDataErrorRespone(res, isvalid2.error.details);
   }
   next();
 };
