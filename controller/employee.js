@@ -68,3 +68,17 @@ exports.findEmployeeByEntryDate = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.search = async (req, res, next) => {
+  try {
+    const { search } = req.body;
+    const searchEmployee = await Employee.find({
+      $or: [{ name: { $regex: `.*${search}.*`, $options: 'i' } }, { nip: { $regex: `.*${search}.*`, $options: 'i' } }],
+    }).populate({
+      path: 'grade',
+    });
+    httpOkResponse(res, 'successfully find employee', searchEmployee);
+  } catch (error) {
+    next(error);
+  }
+};
