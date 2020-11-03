@@ -19,7 +19,7 @@ exports.midEmployee = (req, res, next) => {
   const schema = Joi.object({
     nip: Joi.string().required(),
     name: Joi.string().required(),
-    gender: Joi.string().required(),
+    gender: Joi.string().required().valid('M', 'F'),
     birthdate: Joi.date().required(),
     entrydate: Joi.date().required(),
     grade: Joi.objectId().required(),
@@ -70,6 +70,18 @@ exports.midFindEmployeeByDate = (req, res, next) => {
   const schema = Joi.object({
     start: Joi.date().required(),
     end: Joi.date().required(),
+  }).options({ abortEarly: false });
+  const { error } = schema.validate(req.body);
+  if (error) {
+    return httpValidasiDataErrorRespone(res, error.details);
+  }
+  next();
+};
+
+exports.midSalary = (req, res, next) => {
+  const schema = Joi.object({
+    grade: Joi.string().required().valid('A', 'B', 'C', 'D'),
+    salary: Joi.number().required(),
   }).options({ abortEarly: false });
   const { error } = schema.validate(req.body);
   if (error) {
