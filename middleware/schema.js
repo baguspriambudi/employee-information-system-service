@@ -27,17 +27,14 @@ exports.midProductUpdate = (req, res, next) => {
   next();
 };
 
-exports.midTransactionProducts = (req, res, next) => {
+exports.midEmployee = (req, res, next) => {
   const schema = Joi.object({
-    member: Joi.string().required().allow(''),
-    products: Joi.array()
-      .required()
-      .items(
-        Joi.object({
-          product: Joi.objectId().required(),
-          qty: Joi.number().required(),
-        }),
-      ),
+    nip: Joi.string().required(),
+    name: Joi.string().required(),
+    gender: Joi.string().required(),
+    birthdate: Joi.date().required(),
+    entrydate: Joi.date().required(),
+    grade: Joi.objectId().required(),
   }).options({ abortEarly: false });
   const { error } = schema.validate(req.body);
   if (error) {
