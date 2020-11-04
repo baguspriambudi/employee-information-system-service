@@ -66,6 +66,18 @@ exports.midEmployeeDelete = (req, res, next) => {
   next();
 };
 
+exports.midViewEmployee = (req, res, next) => {
+  const schema = Joi.object({
+    page: Joi.number().default(1).allow('').not(0),
+  }).options({ abortEarly: false });
+
+  const { error } = schema.validate(req.query);
+  if (error) {
+    return httpValidasiDataErrorRespone(res, error.details);
+  }
+  next();
+};
+
 exports.midFindEmployeeByDate = (req, res, next) => {
   const schema = Joi.object({
     start: Joi.date().required(),

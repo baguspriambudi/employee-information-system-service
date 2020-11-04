@@ -22,7 +22,11 @@ exports.createEmployee = async (req, res, next) => {
 
 exports.findEmployee = async (req, res, next) => {
   try {
-    const findEmployee = await Employee.find({}).populate({ path: 'grade' });
+    const { page } = req.query;
+    // eslint-disable-next-line radix
+    const int = parseInt(page);
+    const pageInt = int * 10 - 10;
+    const findEmployee = await Employee.find({}).populate({ path: 'grade' }).skip(pageInt).limit(10);
     httpOkResponse(res, 'successfully find employee', findEmployee);
   } catch (error) {
     next(error);
@@ -66,7 +70,9 @@ exports.deleteEmployee = async (req, res, next) => {
 exports.findEmployeeByEntryDate = async (req, res, next) => {
   try {
     const { start, end } = req.body;
-    const findEmployee = await Employee.find({ entrydate: { $gte: start, $lte: end } }).populate({ path: 'grade' });
+    const findEmployee = await Employee.find({ entrydate: { $gte: start, $lte: end } })
+      .populate({ path: 'grade' })
+      .sort({ entrydate: 1 });
     httpOkResponse(res, 'successfully find employee', findEmployee);
   } catch (error) {
     next(error);
