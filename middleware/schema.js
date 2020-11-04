@@ -89,3 +89,14 @@ exports.midSalary = (req, res, next) => {
   }
   next();
 };
+
+exports.midSearch = (req, res, next) => {
+  const schema = Joi.object({
+    search: Joi.string().required().allow(''),
+  }).options({ abortEarly: false });
+  const { error } = schema.validate(req.body);
+  if (error) {
+    return httpValidasiDataErrorRespone(res, error.details);
+  }
+  next();
+};

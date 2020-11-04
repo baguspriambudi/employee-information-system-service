@@ -72,6 +72,9 @@ exports.findEmployeeByEntryDate = async (req, res, next) => {
 exports.search = async (req, res, next) => {
   try {
     const { search } = req.body;
+    if (search === '') {
+      return httpValidasiErroResponse(res, 'please input data');
+    }
     const searchEmployee = await Employee.find({
       $or: [{ name: { $regex: `.*${search}.*`, $options: 'i' } }, { nip: { $regex: `.*${search}.*`, $options: 'i' } }],
     }).populate({
