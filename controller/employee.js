@@ -1,13 +1,17 @@
 const Employee = require('../model/Employee');
+const Salary = require('../model/Salary');
 const { httpValidasiErroResponse, httpOkResponse, httpNotFound } = require('../helper/http_respone');
 
 exports.createEmployee = async (req, res, next) => {
   try {
     const { nip, name, gender, birthdate, entrydate, grade } = req.body;
-
     const findEmployee = await Employee.findOne({ nip: nip });
     if (findEmployee) {
       return httpValidasiErroResponse(res, 'employee is already exist');
+    }
+    const findSalary = await Salary.findOne({ _id: grade });
+    if (!findSalary) {
+      return httpNotFound(res, 'grade salary not found');
     }
     const employee = await new Employee({ nip, name, gender, birthdate, entrydate, grade }).save();
     httpOkResponse(res, 'employee succesfully inputed ', employee);
