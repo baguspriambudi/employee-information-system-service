@@ -1,7 +1,11 @@
+/* eslint-disable import/no-unresolved */
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const expbs = require('express-handlebars');
+const Handlebars = require('handlebars');
+const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
 
 const PORT = process.env.PORT || 2000;
 const app = express();
@@ -9,7 +13,9 @@ const app = express();
 dotenv.config();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+app.engine('handlebars', expbs({ handlebars: allowInsecurePrototypeAccess(Handlebars) }));
+app.set('view engine', 'handlebars');
 if (process.env.NODE_ENV !== 'test') app.use(morgan('combined'));
 
 // mongodb connections
@@ -26,12 +32,26 @@ mongoose
   });
 
 app.get('/', (req, res) => {
-  res.status(200).json({
-    status: 200,
+  const date = new Date();
+  // res.status(200).json({
+  //   status: 200,
+  //   message: 'system employee information service up and running',
+  //   environment: process.env.NODE_ENV,
+  //   timestamp: new Date(),
+  // });
+  res.render('home', {
+    title: 'Home Page',
     message: 'system employee information service up and running',
-    environment: process.env.NODE_ENV,
-    timestamp: new Date(),
+    timestamp: date,
   });
+});
+
+app.get('/input', (req, res) => {
+  res.render('search', { title: 'Searching' });
+});
+
+app.get('/date', (req, res) => {
+  res.render('date', { title: 'Date' });
 });
 
 // routes API

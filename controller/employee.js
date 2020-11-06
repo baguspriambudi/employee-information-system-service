@@ -22,12 +22,15 @@ exports.createEmployee = async (req, res, next) => {
 
 exports.findEmployee = async (req, res, next) => {
   try {
-    const { page } = req.query;
-    // eslint-disable-next-line radix
-    const int = parseInt(page);
-    const pageInt = int * 10 - 10;
-    const findEmployee = await Employee.find({}).populate({ path: 'grade' }).skip(pageInt).limit(10);
-    httpOkResponse(res, 'successfully find employee', findEmployee);
+    // const { page } = req.query;
+    // const int = parseInt(page);
+    // const pageInt = int * 10 - 10;
+    const findEmployee = await Employee.find({}).populate({ path: 'grade' });
+    res.render('employee', {
+      title: 'Karyawan',
+      findEmployee,
+    });
+    // httpOkResponse(res, 'successfully find employee', findEmployee);
   } catch (error) {
     next(error);
   }
@@ -73,7 +76,10 @@ exports.findEmployeeByEntryDate = async (req, res, next) => {
     const findEmployee = await Employee.find({ entrydate: { $gte: start, $lte: end } })
       .populate({ path: 'grade' })
       .sort({ entrydate: 1 });
-    httpOkResponse(res, 'successfully find employee', findEmployee);
+    // httpOkResponse(res, 'successfully find employee', findEmployee);
+    if (findEmployee) {
+      return res.render('date', { title: 'Karyawan', findEmployee });
+    }
   } catch (error) {
     next(error);
   }
@@ -90,7 +96,10 @@ exports.search = async (req, res, next) => {
     }).populate({
       path: 'grade',
     });
-    httpOkResponse(res, 'successfully find employee', searchEmployee);
+    // httpOkResponse(res, 'successfully find employee', searchEmployee);
+    if (searchEmployee) {
+      return res.render('search', { title: 'Karyawan', searchEmployee });
+    }
   } catch (error) {
     next(error);
   }

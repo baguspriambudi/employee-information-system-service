@@ -1,0 +1,25 @@
+<h2>Data Karyawan</h2>
+<table border="1">
+    <thead>
+        <th>Nip</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Birthdate</th>
+        <th>Entrydate</th>
+        <th>Grade</th>
+        <th>Salary</th>
+    </thead>
+    <tbody>
+        {{#findEmployee}}
+        <tr>
+            <td>{{nip}}</td>
+            <td>{{name}}</td>
+            <td>{{gender}}</td>
+            <td>{{birthdate}}</td>
+            <td>{{entrydate}}</td>
+            <td>{{grade.grade}}</td>
+            <td>{{grade.salary}}</td>
+        </tr>
+        {{/findEmployee}}
+    </tbody>
+</table>

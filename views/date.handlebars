@@ -1,0 +1,34 @@
+<form action="http://localhost:2000/api/v1/auth/employee/find/date" method="POST">
+    <input type="text" name="start" placeholder="tgl awal"></br></br>
+    <input type="text" name="end" placeholder="tgl akhir"></br></br>
+    <button>Send</button>
+</form>
+<h2>Data Karyawan</h2>
+<table border="1">
+    <thead>
+        <th>Nip</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Birthdate</th>
+        <th>Entrydate</th>
+        <th>Grade</th>
+        <th>Salary</th>
+    </thead>
+    <tbody>
+        {{#findEmployee}}
+        <tr>
+            <td>{{nip}}</td>
+            <td>{{name}}</td>
+            <td>{{gender}}</td>
+            <td>{{birthdate}}</td>
+            <td>{{entrydate}}</td>
+            <td>{{grade.grade}}</td>
+            <td>{{grade.salary}}</td>
+        </tr>
+        {{/findEmployee}}
+    </tbody>
+</table></br>
+
+<form action="http://localhost:2000/date" method="GET">
+    <button>Back</button>
+</form>
