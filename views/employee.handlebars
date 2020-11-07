@@ -1,25 +1,29 @@
-<h2>Data Karyawan</h2>
-<table border="1">
-    <thead>
-        <th>Nip</th>
-        <th>Name</th>
-        <th>Gender</th>
-        <th>Birthdate</th>
-        <th>Entrydate</th>
-        <th>Grade</th>
-        <th>Salary</th>
-    </thead>
-    <tbody>
-        {{#findEmployee}}
-        <tr>
-            <td>{{nip}}</td>
-            <td>{{name}}</td>
-            <td>{{gender}}</td>
-            <td>{{birthdate}}</td>
-            <td>{{entrydate}}</td>
-            <td>{{grade.grade}}</td>
-            <td>{{grade.salary}}</td>
-        </tr>
-        {{/findEmployee}}
-    </tbody>
-</table>
+<div class="jumbotron">
+    <h3 class="display-4">Data Karyawan</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nip</th>
+                <th scope="col">Name</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Birthdate</th>
+                <th scope="col">Entrydate</th>
+                <th scope="col">Grade</th>
+                <th scope="col">Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#findEmployee}}
+            <tr>
+                <td>{{nip}}</td>
+                <td>{{name}}</td>
+                <td>{{gender}}</td>
+                <td>{{birthdate}}</td>
+                <td>{{entrydate}}</td>
+                <td>{{grade.grade}}</td>
+                <td>{{grade.salary}}</td>
+            </tr>
+            {{/findEmployee}}
+        </tbody>
+    </table>
+</div>
