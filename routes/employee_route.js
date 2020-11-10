@@ -6,7 +6,7 @@ const employeeController = require('../controller/employee');
 
 const router = express.Router();
 router.post('/create', auth.isAdmin, schema.midEmployee, employeeController.createEmployee);
-router.get('/find', employeeController.findEmployee);
+router.get('/view', employeeController.findEmployee);
 router.post('/update', auth.isAdmin, schema.midEmployeeUpdate, employeeController.updateEmployee);
 router.post('/delete', auth.isAdmin, schema.midEmployeeDelete, employeeController.deleteEmployee);
 router.post('/find/date', employeeController.findEmployeeByEntryDate);
