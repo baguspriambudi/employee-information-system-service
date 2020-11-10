@@ -104,3 +104,19 @@ exports.search = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.viewSeacrh = async (req, res, next) => {
+  try {
+    res.render('search', { title: 'Searching' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.viewDate = async (req, res, next) => {
+  try {
+    res.render('date', { title: 'Date' });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -46,14 +46,6 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/input', (req, res) => {
-  res.render('search', { title: 'Searching' });
-});
-
-app.get('/date', (req, res) => {
-  res.render('date', { title: 'Date' });
-});
-
 // routes API
 const routeApiV1 = express.Router();
 routeApiV1.use('/auth/user', require('./routes/user_route'));
