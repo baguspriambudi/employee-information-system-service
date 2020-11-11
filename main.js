@@ -33,15 +33,9 @@ mongoose
 
 app.get('/', (req, res) => {
   const date = new Date();
-  // res.status(200).json({
-  //   status: 200,
-  //   message: 'system employee information service up and running',
-  //   environment: process.env.NODE_ENV,
-  //   timestamp: new Date(),
-  // });
   res.render('home', {
     title: 'Home Page',
-    message: 'system employee information service up and running',
+    message: 'Hi, Selamat Datang Silahkan Pilih Menu Di Pojok Kanan Atas',
     timestamp: date,
   });
 });
