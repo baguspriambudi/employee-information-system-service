@@ -13,7 +13,7 @@ const app = express();
 dotenv.config();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', expbs({ handlebars: allowInsecurePrototypeAccess(Handlebars) }));
 app.set('view engine', 'handlebars');
 if (process.env.NODE_ENV !== 'test') app.use(morgan('combined'));
@@ -48,9 +48,8 @@ app.get('/', (req, res) => {
 
 // routes API
 const routeApiV1 = express.Router();
-routeApiV1.use('/auth/user', require('./routes/user_route'));
-routeApiV1.use('/auth/salary', require('./routes/salary_route'));
-routeApiV1.use('/auth/employee', require('./routes/employee_route'));
+routeApiV1.use('/salary', require('./routes/salary_route'));
+routeApiV1.use('/employee', require('./routes/employee_route'));
 
 app.use('/api/v1', routeApiV1);
 

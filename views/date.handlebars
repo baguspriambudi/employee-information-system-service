@@ -1,43 +1,45 @@
-<div class="jumbotron">
-    <h3 class="display-4">Cari Data Karyawan</h3></br>
-    <form class="form-inline" action="http://localhost:2000/api/v1/auth/employee/find/date" method="POST">
-        <div class="form-group mb-2">
-            <input type="text" class="form-control" name="start" placeholder="tgl awal">
-        </div>
-        <div class="form-group mx-sm-3 mb-2">
-            <input type="text" class="form-control" name="end" placeholder="tgl akhir">
-        </div>
-        <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
-    </form>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Nip</th>
-                <th scope="col">Name</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Birthdate</th>
-                <th scope="col">Entrydate</th>
-                <th scope="col">Grade</th>
-                <th scope="col">Salary</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#findEmployee}}
-            <tr>
-                <td>{{nip}}</td>
-                <td>{{name}}</td>
-                <td>{{gender}}</td>
-                <td>{{birthdate}}</td>
-                <td>{{entrydate}}</td>
-                <td>{{grade.grade}}</td>
-                <td>{{grade.salary}}</td>
-            </tr>
-            {{/findEmployee}}
-        </tbody>
-    </table>
-    <form class="form-inline" action="http://localhost:2000/date" method="GET">
+<h3>{{viewTitle}}</h3>
+
+<form class="form-inline" action="http://localhost:2000/api/v1/employee/find/date" method="POST">
+    <div class="form-group mb-2">
+        <input type="text" class="form-control" name="start" placeholder="tgl awal">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <input type="text" class="form-control" name="end" placeholder="tgl akhir">
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+</form>
+<div class="text-danger">
+    {{msg}}
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Nip</th>
+            <th scope="col">Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Birthdate</th>
+            <th scope="col">Entrydate</th>
+            <th scope="col">Grade</th>
+            <th scope="col">Salary</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#findEmployee}}
+        <tr>
+            <td>{{nip}}</td>
+            <td>{{name}}</td>
+            <td>{{gender}}</td>
+            <td>{{birthdate}}</td>
+            <td>{{entrydate}}</td>
+            <td>{{grade.grade}}</td>
+            <td>{{grade.salary}}</td>
+        </tr>
+        {{/findEmployee}}
+    </tbody>
+</table>
+{{!-- <form class="form-inline" action="http://localhost:2000/date" method="GET">
         <div class="form-group mx-sm-3 mb-2">
             <button type="submit" class="btn btn-danger mb-2">Back</button>
         </div>
-    </form>
-</div>
+    </form> --}}

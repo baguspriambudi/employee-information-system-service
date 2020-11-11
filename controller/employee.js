@@ -1,20 +1,43 @@
 const Employee = require('../model/Employee');
 const Salary = require('../model/Salary');
-const { httpValidasiErroResponse, httpOkResponse, httpNotFound } = require('../helper/http_respone');
 
 exports.createEmployee = async (req, res, next) => {
   try {
+    // return console.log(req.body);
     const { nip, name, gender, birthdate, entrydate, grade } = req.body;
     const findEmployee = await Employee.findOne({ nip: nip });
     if (findEmployee) {
-      return httpValidasiErroResponse(res, 'employee is already exist');
+      return res.render('insert', {
+        title: 'Searching',
+        viewTitle: 'Insert Employee',
+        exist: 'employee is already exist',
+      });
     }
-    const findSalary = await Salary.findOne({ _id: grade });
+    const findSalary = await Salary.findOne({ grade: grade });
     if (!findSalary) {
-      return httpNotFound(res, 'grade salary not found');
+      return res.render('insert', {
+        title: 'Searching',
+        viewTitle: 'Insert Employee',
+        notfound: 'grade salary not found',
+      });
     }
-    const employee = await new Employee({ nip, name, gender, birthdate, entrydate, grade }).save();
-    httpOkResponse(res, 'employee succesfully inputed ', employee);
+    const employee = await new Employee({ nip, name, gender, birthdate, entrydate, grade: findSalary._id }).save();
+    if (employee) {
+      res.render('insert', {
+        title: 'Created',
+        viewTitle: 'Insert Employee',
+        success: 'employee succesfully inputed',
+        employee: req.body,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.viewInsert = async (req, res, next) => {
+  try {
+    res.render('insert', { title: 'Created', viewTitle: 'Insert Employee' });
   } catch (error) {
     next(error);
   }
@@ -27,10 +50,9 @@ exports.findEmployee = async (req, res, next) => {
     // const pageInt = int * 10 - 10;
     const findEmployee = await Employee.find({}).populate({ path: 'grade' });
     res.render('employee', {
-      title: 'Karyawan',
+      title: 'Employee',
       findEmployee,
     });
-    // httpOkResponse(res, 'successfully find employee', findEmployee);
   } catch (error) {
     next(error);
   }
@@ -38,33 +60,48 @@ exports.findEmployee = async (req, res, next) => {
 
 exports.updateEmployee = async (req, res, next) => {
   try {
-    const findEmployee = await Employee.findById({ _id: req.query.id });
-    if (!findEmployee) {
-      return httpNotFound(res, 'Employee not found');
+    const { nip, name, gender, birthdate, entrydate, grade } = req.body;
+    const findGrade = await Salary.findOne({ grade: grade });
+    if (!findGrade) {
+      return res.render('edit', { grade: 'Grade not found' });
     }
-    const updateEmployee = await Employee.findOneAndUpdate(
-      {
-        _id: req.query.id,
-      },
-      req.body,
-      { new: true },
-    );
-    httpOkResponse(res, 'employee successfully updated', updateEmployee);
+    const Update = await Employee.updateOne({
+      nip: nip,
+      name: name,
+      gender: gender,
+      birthdate: birthdate,
+      entrydate: entrydate,
+      grade: findGrade._id,
+    });
+    if (Update) {
+      return res.render('edit', { title: 'Updated', viewTitle: 'Update Employee', success: 'Succesfuly updated' });
+    }
   } catch (error) {
     next(error);
   }
 };
 
-exports.deleteEmployee = async (req, res, next) => {
+exports.viewUpdate = async (req, res, next) => {
   try {
-    const findEmployee = await Employee.findById({ _id: req.query.id });
-    if (!findEmployee) {
-      return httpNotFound(res, 'Employee not found');
+    const find = await Employee.findOne({ _id: req.params.id });
+    if (!find) {
+      return res.render('edit', { msg: 'Employee not found' });
     }
-    const deleteEmployee = await Employee.findOneAndDelete({
-      _id: req.query.id,
-    });
-    httpOkResponse(res, 'employee successfully deleted', deleteEmployee);
+    res.render('edit', { title: 'Updated', viewTitle: 'Update Employee', find });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.viewDelete = async (req, res, next) => {
+  try {
+    const find = await Employee.findByIdAndDelete({ _id: req.params.id });
+    if (!find) {
+      return res.render('employee', { msg: 'Employee not found' });
+    }
+    if (find) {
+      return res.redirect('http://localhost:2000/api/v1/employee/view');
+    }
   } catch (error) {
     next(error);
   }
@@ -76,10 +113,7 @@ exports.findEmployeeByEntryDate = async (req, res, next) => {
     const findEmployee = await Employee.find({ entrydate: { $gte: start, $lte: end } })
       .populate({ path: 'grade' })
       .sort({ entrydate: 1 });
-    // httpOkResponse(res, 'successfully find employee', findEmployee);
-    if (findEmployee) {
-      return res.render('date', { title: 'Karyawan', findEmployee });
-    }
+    res.render('date', { title: 'By Date', viewTitle: 'Find Employee', findEmployee });
   } catch (error) {
     next(error);
   }
@@ -89,16 +123,15 @@ exports.search = async (req, res, next) => {
   try {
     const { search } = req.body;
     if (search === '') {
-      return httpValidasiErroResponse(res, 'please input data');
+      return res.render('search', { msg: 'please input data' });
     }
     const searchEmployee = await Employee.find({
       $or: [{ name: { $regex: `.*${search}.*`, $options: 'i' } }, { nip: { $regex: `.*${search}.*`, $options: 'i' } }],
     }).populate({
       path: 'grade',
     });
-    // httpOkResponse(res, 'successfully find employee', searchEmployee);
     if (searchEmployee) {
-      return res.render('search', { title: 'Karyawan', searchEmployee });
+      return res.render('search', { title: 'Searching', viewTitle: 'Find Employee', searchEmployee });
     }
   } catch (error) {
     next(error);
@@ -107,7 +140,7 @@ exports.search = async (req, res, next) => {
 
 exports.viewSeacrh = async (req, res, next) => {
   try {
-    res.render('search', { title: 'Searching' });
+    res.render('search', { title: 'Searching', viewTitle: 'Find Employee' });
   } catch (error) {
     next(error);
   }
@@ -115,7 +148,7 @@ exports.viewSeacrh = async (req, res, next) => {
 
 exports.viewDate = async (req, res, next) => {
   try {
-    res.render('date', { title: 'Date' });
+    res.render('date', { title: 'By Date', viewTitle: 'Find Employee' });
   } catch (error) {
     next(error);
   }

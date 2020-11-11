@@ -1,42 +1,38 @@
-<div class="jumbotron">
-    <h3 class="display-4">Cari Data Karyawan</h3></br>
-    <form class="form-inline" action="http://localhost:2000/api/v1/auth/employee/search" method="POST">
-        <div class="form-group mb-2">
-            <input type="text" class="form-control" name="search" placeholder="Ketikan sesuatu">
-        </div>
-        <div class="form-group mx-sm-3 mb-2">
-            <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
-        </div>
-    </form>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Nip</th>
-                <th scope="col">Name</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Birthdate</th>
-                <th scope="col">Entrydate</th>
-                <th scope="col">Grade</th>
-                <th scope="col">Salary</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#searchEmployee}}
-            <tr>
-                <td>{{nip}}</td>
-                <td>{{name}}</td>
-                <td>{{gender}}</td>
-                <td>{{birthdate}}</td>
-                <td>{{entrydate}}</td>
-                <td>{{grade.grade}}</td>
-                <td>{{grade.salary}}</td>
-            </tr>
-            {{/searchEmployee}}
-        </tbody>
-    </table>
-    <form class="form-inline" action="http://localhost:2000/input" method="GET">
-        <div class="form-group mx-sm-3 mb-2">
-            <button type="submit" class="btn btn-danger mb-2">Back</button>
-        </div>
-    </form>
+<h3>{{viewTitle}}</h3>
+<form class="form-inline" action="http://localhost:2000/api/v1/employee/search" method="POST">
+    <div class="form-group mb-2">
+        <input type="text" class="form-control" name="search" placeholder="Ketikan sesuatu">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+    </div>
+</form>
+<div class="text-danger">
+    {{msg}}
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Nip</th>
+            <th scope="col">Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Birthdate</th>
+            <th scope="col">Entrydate</th>
+            <th scope="col">Grade</th>
+            <th scope="col">Salary</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#searchEmployee}}
+        <tr>
+            <td>{{nip}}</td>
+            <td>{{name}}</td>
+            <td>{{gender}}</td>
+            <td>{{birthdate}}</td>
+            <td>{{entrydate}}</td>
+            <td>{{grade.grade}}</td>
+            <td>{{grade.salary}}</td>
+        </tr>
+        {{/searchEmployee}}
+    </tbody>
+</table>

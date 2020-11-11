@@ -1,20 +1,29 @@
 const Salary = require('../model/Salary');
-const { httpOkResponse } = require('../helper/http_respone');
 
 exports.createSalary = async (req, res, next) => {
   try {
     const { grade, salary } = req.body;
+    const find = await Salary.findOne({ grade: grade });
+    if (find) {
+      return res.render('salary', { msg: 'salary is exist' });
+    }
     const salaryCreated = await new Salary({ grade, salary }).save();
-    httpOkResponse(res, 'salary succesfully inputed', salaryCreated);
+    if (salaryCreated) {
+      return res.render('salary', {
+        title: 'Created',
+        viewTitle: 'Create Salary',
+        success: 'salary succesfully inputed',
+      });
+    }
+    // httpOkResponse(res, 'salary succesfully inputed', salaryCreated);
   } catch (error) {
     next(error);
   }
 };
 
-exports.findSalary = async (req, res, next) => {
+exports.viewInsertSalary = async (req, res, next) => {
   try {
-    const findSalary = await Salary.find({});
-    httpOkResponse(res, 'salary succesfully inputed', findSalary);
+    return res.render('salary', { title: 'Created', viewTitle: 'Create Salary' });
   } catch (error) {
     next(error);
   }

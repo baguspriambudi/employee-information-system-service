@@ -1,29 +1,38 @@
-<div class="jumbotron">
-    <h3 class="display-4">Data Karyawan</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Nip</th>
-                <th scope="col">Name</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Birthdate</th>
-                <th scope="col">Entrydate</th>
-                <th scope="col">Grade</th>
-                <th scope="col">Salary</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#findEmployee}}
-            <tr>
-                <td>{{nip}}</td>
-                <td>{{name}}</td>
-                <td>{{gender}}</td>
-                <td>{{birthdate}}</td>
-                <td>{{entrydate}}</td>
-                <td>{{grade.grade}}</td>
-                <td>{{grade.salary}}</td>
-            </tr>
-            {{/findEmployee}}
-        </tbody>
-    </table>
+<h3><a class="btn btn-secondary" href="http://localhost:2000/api/v1/employee/view/create"><i class="fa fa-plus"></i>
+        Create New</a> Employee List</h3>
+<div class="text-danger">
+    {{msg}}
 </div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nip</th>
+            <th scope="col">Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Birthdate</th>
+            <th scope="col">Entrydate</th>
+            <th scope="col">Grade</th>
+            <th scope="col">Salary</th>
+            <th scope="col">Menu</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#findEmployee}}
+        <tr>
+            <td>{{nip}}</td>
+            <td>{{name}}</td>
+            <td>{{gender}}</td>
+            <td>{{birthdate}}</td>
+            <td>{{entrydate}}</td>
+            <td>{{grade.grade}}</td>
+            <td>{{grade.salary}}</td>
+            <td>
+                <a href="http://localhost:2000/api/v1/employee/view/update/{{_id}}"><i class="fa fa-pencil fa-lg"
+                        aria-hidden="true"></i></a>
+                <a href="http://localhost:2000/api/v1/employee/view/delete/{{_id}}"><i class=" fa fa-trash fa-lg"
+                        aria-hidden="true"></i></a>
+            </td>
+        </tr>
+        {{/findEmployee}}
+    </tbody>
+</table>
